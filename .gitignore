@@ -1,0 +1,136 @@
+# === Impeccable: ephemeral output, runtime state, per-dev overrides ===
+# Shared artifacts stay tracked: config.json, live/config.json, design.json,
+# surfaces/*.md, critique/ignore.md, plus PRODUCT.md and DESIGN.md.
+**/.impeccable/config.local.json
+**/.impeccable/hook.cache.json
+**/.impeccable/hook.pending.json
+**/.impeccable/*.png
+**/.impeccable/review/
+**/.impeccable/questions/
+**/.impeccable/live/server.json
+**/.impeccable/live/sessions/
+**/.impeccable/live/previews/
+**/.impeccable/live/annotations/
+**/.impeccable/live/cache/
+**/.impeccable/live/manual-edit-apply-transaction.json
+**/.impeccable/live/manual-edit-events.jsonl
+**/.impeccable/live/manual-edit-evidence/
+**/.impeccable/live/pending-manual-edits.json
+**/.impeccable/live/deferred-svelte-component-accepts.json
+**/.impeccable/live/*.png
+# impeccable-ignore-end
+
+# === Dependencies ===
+node_modules/
+.pnp
+.pnp.js
+.npm/
+jspm_packages/
+web_modules/
+
+# === Build output ===
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.parcel-cache/
+coverage/
+*.tsbuildinfo
+
+# === Environment / secrets ===
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# === Logs ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === OS files ===
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# === Editor / IDE ===
+.idea/
+*.iml
+*.code-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# === Temp / caches ===
+*.tmp
+*.temp
+*.bak
+*~
+*.swp
+*.swo
+.cache/
+.tmp/
+temp/
+
+# === Python (если появятся скрипты) ===
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# === Локальные бэкапы ===
+_backups/
+
+# impeccable-live-ignore-start
+.impeccable/hook.cache.json
+.impeccable/hook.pending.json
+.impeccable/config.local.json
+.impeccable/live/server.json
+.impeccable/live/roots.json
+.impeccable/live/app-root.json
+.impeccable/live/inject-journal.json
+.impeccable/live/sessions/
+.impeccable/live/previews/
+.impeccable/live/annotations/
+.impeccable/live/artifacts/
+.impeccable/live/accept-receipts/
+.impeccable/live/locks/
+.impeccable/live/cache/
+.impeccable/live/manual-edit-apply-transaction.json
+.impeccable/live/manual-edit-events.jsonl
+.impeccable/live/manual-edit-evidence/
+.impeccable/live/pending-manual-edits.json
+.impeccable/live/deferred-svelte-component-accepts.json
+.impeccable-live.json
+.impeccable-live/
+app/.impeccable-live/
+src/.impeccable-live/
+node_modules/.impeccable-live/
+src/lib/impeccable/ImpeccableLiveRoot.svelte
+src/lib/impeccable/__runtime.js
+src/lib/impeccable/[0-9a-f]*/
+plugins/impeccable-live.client.ts
+app/plugins/impeccable-live.client.ts
+src/plugins/impeccable-live.client.ts
+# impeccable-live-ignore-end
+
+# === Локальные материалы вне публикуемого сайта ===
+# скриншоты QA, исходники изображений, референсы и настройки агентов
+# не нужны в репозитории: сайт живёт в site/
+.shots/
+_assets-src/
+reference/
+.opencode/
+.impeccable/

@@ -1,0 +1,244 @@
+/* Кактус — страница каталога */
+.cat-hero,.cat-products{position:relative;isolation:isolate;overflow:hidden}
+.cat-hero>.wrap,.cat-products>.cat-grid,.cat-products>.cat-cta{position:relative;z-index:1}
+
+.catalog-main{padding-top:var(--nav-h)}
+.cat-hero{padding:clamp(56px,6vw,92px) 0 clamp(34px,4vw,54px)}
+.cat-hero__grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.6fr);gap:clamp(28px,5vw,80px);align-items:end}
+.cat-hero h1{
+  margin:0;font:300 clamp(72px,12.5vw,188px)/.84 var(--serif);
+  letter-spacing:-.05em;text-transform:none;
+}
+.cat-hero__aside p{margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.8;max-width:38ch}
+.cat-hero__aside p b{color:var(--ivory);font-weight:400}
+.cat-hero__meta{display:flex;gap:26px;align-items:baseline;border-top:1px solid var(--line);padding-top:16px}
+.cat-hero__meta span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.cat-hero__meta strong{font:300 26px/1 var(--serif);color:var(--brass);font-weight:300}
+
+.cat-bar{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:16px 0;margin-top:clamp(20px,3vw,34px);
+}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{
+  height:44px;padding:0 16px;border:1px solid var(--line);color:var(--muted);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  transition:background .3s var(--ease),color .3s,border-color .3s;
+}
+.filter:hover{color:var(--ivory);border-color:var(--brass-soft)}
+.filter[aria-pressed="true"]{background:var(--ivory);border-color:var(--ivory);color:var(--night)}
+.cat-count{font-size:12px;letter-spacing:.04em;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.cat-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(28px,3.4vw,44px) clamp(18px,2.4vw,34px);
+  padding:clamp(30px,4vw,46px) 0 clamp(20px,3vw,34px);
+}
+.cat-card{display:flex;flex-direction:column;min-width:0}
+.cat-card figure{margin:0;position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--night-2)}
+.cat-card img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.cat-card:hover img{transform:scale(1.04)}
+.cat-card__badge{
+  position:absolute;left:14px;top:13px;z-index:2;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(236,228,212,.7);
+}
+.cat-card__body{padding-top:15px}
+.cat-card__row{
+  display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+  border-bottom:1px solid var(--line);padding-bottom:11px;transition:border-color .35s;
+}
+.cat-card:hover .cat-card__row{border-color:var(--brass)}
+.cat-card h2{margin:0;font:400 clamp(19px,1.55vw,24px)/1.2 var(--serif);letter-spacing:.005em;max-width:none}
+.cat-card__price{font-size:14px;color:var(--brass);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cat-card__comp{margin:9px 0 0;font-size:12px;line-height:1.6;color:var(--muted)}
+.cat-card__more{
+  margin-top:10px;display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(236,228,212,.6);
+  transition:color .3s;
+}
+.cat-card__more svg{width:12px;height:12px;transition:transform .35s var(--ease)}
+.cat-card:hover .cat-card__more{color:var(--brass)}
+.cat-card:hover .cat-card__more svg{transform:translateX(3px)}
+
+.cat-empty{
+  grid-column:1 / -1;padding:60px 0;text-align:left;color:var(--muted);
+  font-size:16px;line-height:1.7;
+}
+
+.cat-cta{
+  margin-top:clamp(28px,4vw,44px);border-top:1px solid var(--line);
+  padding:clamp(40px,5vw,64px) 0;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:32px;flex-wrap:wrap;
+}
+.cat-cta h2{font-size:clamp(30px,3.4vw,48px);max-width:16ch;margin:0 0 10px}
+.cat-cta p{margin:0;color:var(--muted);font-size:14px;line-height:1.7;max-width:40ch}
+
+@media (max-width:1100px){
+  .cat-hero__grid{grid-template-columns:1fr;gap:24px;align-items:start}
+  .cat-hero h1{font-size:clamp(64px,15vw,130px)}
+  .cat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  .cat-hero{padding-top:44px}
+  .cat-hero h1{font-size:clamp(64px,22vw,110px)}
+  .cat-bar{padding:12px 0}
+  .filter{height:44px;padding:0 10px;font-size:11px;letter-spacing:.08em}
+  .cat-grid{grid-template-columns:1fr;gap:30px}
+  .cat-cta{flex-direction:column;align-items:flex-start}
+  .cat-cta .btn{width:100%}
+}
+
+/* ---------- секции каталога: параллакс и общий лист ---------- */
+.cat-list{position:relative;overflow:hidden;z-index:1}
+.cat-hero,.cat-list{isolation:isolate}
+
+/* след тянется по всей высоте секции, но живёт под карточками: над сеткой
+   он превращается в тёмное пятно поверх фотографий букетов. Шапка каталога
+   входит в ту же секцию, поэтому её контент тоже поднят над следом. */
+.cat-list>.wrap{position:relative;z-index:1}
+.cat-list>.cat-hero{position:relative;z-index:1}
+
+.cat-hero>.wrap,
+.cat-list>.wrap{
+  transform:translate3d(0, calc(var(--q, 0) * -1.5vh), 0);
+  will-change:transform;
+}
+.cat-hero h1{
+  transform:translate3d(0, calc(var(--q, 0) * -0.8vh), 0);
+}
+.cat-grid .cat-card:nth-child(3n+2){
+  transform:translate3d(0, calc(var(--q, 0) * 1.2vh), 0);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cat-hero>.wrap,
+  .cat-list>.wrap,
+  .cat-hero h1,
+  .cat-grid .cat-card:nth-child(3n+2){transform:none}
+}
+
+/* опция разметки data-trail-above — когда след всё же должен лежать
+   поверх содержимого секции, а не под ним */
+.trail--above{z-index:2}
+
+/* ---------- декор каталога: вода и лепестки «Трёх букетов вечера» ----------
+   Язык тот же, что у коллекции на главной (см. base.css): тёплое золото по
+   фону, крупные размытые лепестки на screen и резкие лепестки по кромкам.
+   Секция здесь вчетверо длиннее (12 карточек), поэтому свет разложен по
+   длине: два пятна в полосе заголовка и фильтров, одно — тёплой полосой по
+   левой кромке на пробеге карточек, два — в нижних углах у CTA. Букеты идут
+   выше слоя декора, так что пятна не ложатся на фотографии.
+   Проценты по вертикали считаются от всей высоты секции, поэтому верх
+   задан px (полоса над заголовком), а низ — calc(100% - Npx): у CTA
+   положение не зависит от числа карточек. */
+.cat-list .decor{
+  --decor-sheen-x:22%;
+  --decor-sheen-y:2.4%;
+
+  --glow-a-x:-20%;
+  --glow-a-y:-3%;
+  --glow-a-w:clamp(320px,48vw,700px);
+  --glow-a-o:.24;
+
+  --glow-b-x:-12%;
+  --glow-b-y:-5%;
+  --glow-b-w:clamp(240px,38vw,560px);
+  --glow-b-o:.22;
+
+  /* пятна: a — левый верх, d — правый верхний угол; e — тёплой полосой по
+     левой кромке посреди карточек; c и b — нижние углы у CTA */
+  --glow-c-x:-16%;
+  --glow-c-y:-6%;
+  --glow-c-w:clamp(220px,34vw,500px);
+  --glow-c-o:.22;
+
+  --glow-d-x:-16%;
+  --glow-d-y:-180px;
+  --glow-d-w:clamp(220px,34vw,500px);
+  --glow-d-o:.2;
+
+  --glow-e-x:-10%;
+  --glow-e-y:40%;
+  --glow-e-w:clamp(240px,40vw,600px);
+  --glow-e-o:.26;
+
+  /* верхняя полоса: лепесток над «К» и мелкий над просветом у aside */
+  --petal-a-x:6.4%;
+  --petal-a-y:10px;
+  --petal-a-w:clamp(50px,5.3vw,82px);
+  --petal-a-r:-24deg;
+  --petal-a-o:.88;
+
+  --petal-b-x:60.5%;
+  --petal-b-y:2px;
+  --petal-b-w:clamp(36px,3.9vw,58px);
+  --petal-b-r:58deg;
+  --petal-b-o:.6;
+
+  /* низ: бордовая выходит из-за кнопки у правой кромки, ivory — в просвет
+     между абзацем CTA и кнопкой */
+  --petal-c-x:-1.8%;
+  --petal-c-y:calc(100% - 186px);
+  --petal-c-w:clamp(60px,6.2vw,98px);
+  --petal-c-r:-28deg;
+  --petal-c-o:.46;
+
+  --petal-d-x:60.5%;
+  --petal-d-y:calc(100% - 238px);
+  --petal-d-w:clamp(44px,4.4vw,68px);
+  --petal-d-r:138deg;
+  --petal-d-o:.8;
+}
+
+/* на узких экранах base.css оставляет один лепесток: уводим его из-под
+   литеры «К» — пусть свисает с верхней кромки у правого поля */
+@media (max-width:960px){
+  .cat-list .decor{
+    --glow-a-x:-34%;
+    --glow-a-y:-1%;
+    --glow-a-w:clamp(240px,80vw,400px);
+    --glow-a-o:.22;
+
+    --glow-b-x:-26%;
+    --glow-b-y:-90px;
+    --glow-b-w:clamp(210px,60vw,340px);
+    --glow-b-o:.22;
+
+    --glow-c-x:-20%;
+    --glow-c-y:-110px;
+    --glow-c-w:clamp(200px,56vw,320px);
+    --glow-c-o:.2;
+
+    --glow-d-x:-14%;
+    --glow-d-y:-140px;
+    --glow-d-w:clamp(190px,60vw,340px);
+    --glow-d-o:.2;
+
+    --glow-e-w:clamp(170px,52vw,300px);
+    --glow-e-o:.2;
+
+    --petal-a-x:calc(100% - 66px);
+    --petal-a-y:4px;
+    --petal-a-w:clamp(46px,11vw,64px);
+    --petal-a-r:-16deg;
+    --petal-a-o:.8;
+  }
+  /* .decor img{display:block} в base.css специфичнее, чем его же
+     .decor__petal--b/--c/--d{display:none}, поэтому глушим лишние лепестки
+     здесь — от селектора с классом .cat-list. */
+  .cat-list .decor .decor__petal--b,
+  .cat-list .decor .decor__petal--c,
+  .cat-list .decor .decor__petal--d{display:none}
+}
+
+/* 961–1100: герой уже в одну колонку, над «Каталогом» остаётся только
+   полоса верхнего паддинга — лепесток свисает с кромки ниже шапки, а не
+   ложится на литеру */
+@media (min-width:961px) and (max-width:1100px){
+  .cat-list .decor{
+    --petal-a-x:5.6%;
+    --petal-a-y:-10px;
+    --petal-a-w:clamp(46px,5vw,64px);
+  }
+}

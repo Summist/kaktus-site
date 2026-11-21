@@ -1,0 +1,130 @@
+/* Кактус — служебная текстовая страница.
+
+   Документ живёт в том же контейнере, что шапка, секции и подвал (.wrap):
+   текст начинается на линии логотипа, а дата и нижний блок заканчиваются
+   там же, где заканчивается навигация. Строка держит меру ~70ch — колонка
+   не растягивается на всю ширину контейнера. */
+
+.doc{
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:calc(var(--nav-h) + clamp(48px,6vw,84px)) 0 clamp(64px,7vw,100px);
+}
+.doc>.wrap{position:relative;z-index:1}
+
+/* ---------- шапка документа ---------- */
+
+.doc__head{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:end;column-gap:clamp(20px,3vw,48px);
+  padding-bottom:clamp(20px,2.2vw,30px);
+  border-bottom:1px solid var(--line);
+}
+.doc h1{
+  margin:0;max-width:22ch;
+  font:300 clamp(32px,5.2vw,76px)/1.03 var(--serif);
+  letter-spacing:-.03em;
+  overflow-wrap:break-word;hyphens:auto;
+}
+.doc__meta{
+  margin:0 0 .45em;
+  font:400 11px/1.6 var(--sans);
+  letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+  color:var(--brass);
+}
+
+/* ---------- текст документа ---------- */
+
+.doc__body{
+  padding-top:clamp(28px,3.2vw,44px);
+  font-size:17px;line-height:1.85;color:var(--muted);
+}
+.doc__body p{margin:0 0 14px;max-width:44rem}
+p.doc__lead{
+  margin:0;max-width:44rem;
+  font-size:clamp(17px,1.3vw,19px);line-height:1.7;
+}
+
+.doc__sec{
+  margin-top:clamp(34px,3.6vw,52px);
+  padding-top:32px;
+  border-top:1px solid var(--line-soft);
+}
+.doc h2{
+  margin:0 0 clamp(12px,1.4vw,18px);
+  font:400 clamp(23px,2.4vw,32px)/1.22 var(--serif);
+  letter-spacing:-.01em;max-width:none;
+}
+
+.doc__body ul,.doc__body ol{margin:0;padding-left:20px;max-width:44rem}
+.doc__body li{margin-bottom:7px}
+.doc__body li:last-child{margin-bottom:0}
+.doc__body li::marker{color:var(--brass)}
+
+.doc a{color:var(--ivory);border-bottom:1px solid var(--line);transition:border-color .3s,color .3s}
+.doc a:hover{border-color:var(--brass);color:var(--brass)}
+
+/* ---------- закрывающий блок ---------- */
+
+.doc__foot{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:clamp(24px,4vw,64px);
+  margin-top:clamp(40px,4.4vw,60px);
+  padding-top:clamp(24px,2.6vw,34px);
+  border-top:1px solid var(--line);
+}
+p.doc__note{
+  margin:0;max-width:58ch;padding:18px 20px;
+  border:1px solid var(--line);
+  font-size:13px;line-height:1.75;
+}
+p.doc__back{margin:0 0 2px;flex:none}
+
+@media (max-width:900px){
+  .doc__head{grid-template-columns:minmax(0,1fr);row-gap:14px}
+  .doc__meta{margin:0}
+}
+@media (max-width:640px){
+  .doc__sec{padding-top:22px}
+  .doc__foot{flex-direction:column;align-items:stretch}
+  p.doc__note{max-width:none}
+  .doc__back{align-self:flex-start}
+}
+
+/* ---------- декоративный слой документа ----------
+
+   Язык тот же, что у секции «Три букета вечера»: тёплое золотое свечение
+   по фону, два размытых лепестка на screen и резкие лепестки по кромкам.
+   Но раскладка здесь своя: колонка текста узкая (~44rem) и прижата влево,
+   поэтому правое поле страницы остаётся большим и пустым — его держат
+   лепестки c и d, ещё по одному входят с верхней и нижней кромки.
+   Лепестки стоят не ближе 78% ширины: так они не заезжают на абзацы
+   вплоть до 961px, где base.css ещё показывает все четыре. */
+
+.doc .decor{
+  --decor-sheen-x:70%;--decor-sheen-y:4%;
+  --glow-a-x:-16%;--glow-a-y:-8rem;--glow-a-w:46vw;--glow-a-o:.2;
+  --glow-b-x:-14%;--glow-b-y:-5rem;--glow-b-w:38vw;--glow-b-o:.16;
+  --petal-a-x:79%;--petal-a-y:7.5rem;--petal-a-w:clamp(48px,4.8vw,72px);--petal-a-r:-18deg;--petal-a-o:.8;
+  --petal-b-x:80%;--petal-b-y:calc(100% - 22rem);--petal-b-w:clamp(38px,3.6vw,56px);--petal-b-r:58deg;--petal-b-o:.5;
+  --petal-c-x:3.4%;--petal-c-y:34%;--petal-c-w:clamp(80px,7.6vw,116px);--petal-c-r:-34deg;--petal-c-o:.4;
+  --petal-d-x:87%;--petal-d-y:63%;--petal-d-w:clamp(36px,3.4vw,54px);--petal-d-r:118deg;--petal-d-o:.72;
+}
+
+/* На узком экране текст занимает всю ширину кадра: единственный
+   оставшийся лепесток держится на верхней кромке, в просвете между
+   шапкой и заголовком, — там он ни на что не ложится. */
+@media (max-width:960px){
+  .doc .decor{
+    --decor-sheen-x:84%;--decor-sheen-y:1.5%;
+    --glow-a-x:-24%;--glow-a-y:-6rem;--glow-a-w:72vw;--glow-a-o:.18;
+    --glow-b-x:-16%;--glow-b-y:-3rem;--glow-b-w:58vw;--glow-b-o:.14;
+    --petal-a-x:calc(100% - 44px);--petal-a-y:4.75rem;
+    --petal-a-w:36px;--petal-a-r:-16deg;--petal-a-o:.6;
+  }
+  /* base.css гасит лишние лепестки правилом display:none, но его
+     перебивает .decor img{display:block} — селектор с типом специфичнее.
+     Досылаем здесь, чтобы на узком экране остался один лепесток. */
+  .doc .decor__petal--b,
+  .doc .decor__petal--c,
+  .doc .decor__petal--d{display:none}
+}

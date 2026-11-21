@@ -1,0 +1,647 @@
+/* Кактус — главная: hero, коллекция, студия, доставка, заказ, визит */
+
+/* ---------- hero ---------- */
+
+/* Hero держится в кадре, пока коллекция естественно поднимается поверх него.
+   Высота по умолчанию равна экрану; JS меняет её только если содержимое
+   действительно выше viewport. */
+:root{--hero-real:100svh}
+
+.hero-stage{position:relative;height:calc(var(--hero-real) + 100svh)}
+
+.hero{
+  min-height:100svh;position:relative;display:flex;flex-direction:column;
+  padding:100px 0 0;overflow:hidden;
+}
+.hero-stage .hero{position:sticky;top:0;z-index:0}
+.hero__media{
+  position:absolute;inset:0;background:var(--night);
+}
+.hero__media>img{
+  width:100%;height:100%;object-fit:cover;object-position:center 48%;
+  animation:heroIn 2.4s var(--ease) both;
+}
+/* только проявление: масштаб не трогаем, иначе при движении курсора
+   в первые секунды след проявляет кадр в другом масштабе, чем стоит фон */
+@keyframes heroIn{from{opacity:.25}to{opacity:1}}
+
+/* Фон героя уходит в глубину, пока его накрывает коллекция: --cover (0..1)
+   пишет scroll.js для второй секции. Приближение небольшое — поверх фото
+   лежит след курсора, и кадр не должен заметно разъезжаться с ним.
+   Кадр растёт от середины вниз, поэтому верхняя кромка не оголяется. */
+.hero__media{
+  transform-origin:50% 44%;
+  transform:
+    translate3d(0, calc(var(--cover, 0) * 1.6vh), 0)
+    scale(calc(1 + var(--cover, 0) * .045));
+  will-change:transform;
+}
+
+/* ---------- cursor trail reveal ----------
+   Один видимый слой на секцию: canvas с альтернативным изображением,
+   проявленным процедурной кистью. Кисть штампуется по траектории, хвост
+   исчезает её краем; отдельной blur-маски нет. Обёртка с обрезкой держит
+   след внутри секции — он не перетекает через границы. */
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(14,24,19,.88) 0%,rgba(14,24,19,.58) 36%,rgba(14,24,19,.32) 62%,rgba(14,24,19,.74) 100%),
+    linear-gradient(0deg,rgba(14,24,19,.94),rgba(14,24,19,.08) 46%);
+}
+.hero__frame{position:absolute;inset:22px;border:1px solid rgba(201,162,91,.3);z-index:2;pointer-events:none}
+.hero .wrap{
+  position:relative;z-index:3;display:flex;flex-direction:column;flex:1;
+  padding-top:20px;padding-bottom:30px;
+}
+.hero__top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.hero__top .micro{max-width:16em;line-height:1.9}
+/* колонка заголовка по ширине самой строки: при max-width:--max колонка
+   перестаёт расти, а кегль упирается в 166px — слово шире колонки и его
+   срезал overflow:hidden на .ln (маска для подъёма строк) */
+.hero__body{flex:1;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:40px;align-items:center}
+.hero h1{
+  margin:0;font:300 clamp(64px,10vw,166px)/.92 var(--serif);
+  letter-spacing:-.03em;max-width:9ch;
+}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.05em}
+.hero h1 .ln>span{display:block;transform:translateY(112%);animation:lineUp 1.5s var(--ease) both}
+.hero h1 .ln:nth-child(2)>span{animation-delay:.12s}
+@keyframes lineUp{to{transform:none}}
+.hero h1 em{font-style:italic;color:var(--brass)}
+.hero__aside{justify-self:end;max-width:340px;padding-top:16px}
+.hero__aside p{margin:0 0 26px;color:rgba(236,228,212,.8);font-size:16px;line-height:1.75}
+.hero__aside .rule{width:64px;height:1px;background:var(--brass);margin-bottom:26px}
+.hero__foot{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+  border-top:1px solid var(--line);padding-top:20px;margin-top:40px;
+}
+.hero__meta{display:flex;gap:44px;font-size:12px;line-height:1.7;color:var(--muted)}
+.hero__meta b{display:block;color:var(--ivory);font-weight:400;letter-spacing:.02em;margin-bottom:2px}
+.vertical{
+  writing-mode:vertical-rl;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(236,228,212,.55);position:absolute;left:14px;top:50%;
+  transform:translateY(-50%) rotate(180deg);z-index:3;
+}
+
+/* ---------- section surfaces ----------
+   Трейл каждой секции живёт в её собственных границах: .sec обрезает слой,
+   а контент .wrap лежит выше и остаётся нетронутым. */
+
+.sec{position:relative;overflow:hidden}
+.sec>.wrap{position:relative;z-index:1}
+.home .foot{position:relative;overflow:hidden}
+
+/* ---------- collection (layout from variant 01) ---------- */
+
+/* лист коллекции поднимается поверх приколотого hero и накрывает его ровно
+   к концу участка прокрутки; тень над кромкой читается как глубина */
+.hero-stage + .collection{
+  margin-top:calc(var(--hero-real) * -1);
+  overflow:visible;
+  scroll-margin-top:calc(var(--nav-h) * -1);
+  border-top-color:rgba(201,162,91,.28);
+}
+.collection{background:var(--night);padding-top:clamp(64px,6vw,96px)}
+.collection .sec-head h2{margin:0;font-size:clamp(38px,4.3vw,60px)}
+
+/* Свет сквозь лепесток: пустоту панели держит не наклейка, а свет — два
+   размытых лепестка на screen над ночным полем. Резкие лепестки лежат в
+   просветах между кадрами и не заходят на сами букеты; один, на кромке
+   второй фотографии, выходит вперёд — он и даёт глубину. */
+.collection{isolation:isolate}
+.collection::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(62% 58% at 20% 10%, rgba(201,162,91,.14), rgba(201,162,91,0) 72%);
+}
+.collection__glow{
+  position:absolute;z-index:0;pointer-events:none;
+  mix-blend-mode:screen;filter:blur(38px);
+}
+.collection__glow img{display:block;width:100%;height:auto}
+.collection__glow--near{left:-10%;top:-6%;width:44vw;opacity:.2}
+.collection__glow--far{right:-10%;bottom:-4%;width:30vw;opacity:.14}
+.collection__petal{
+  position:absolute;z-index:1;pointer-events:none;
+  filter:
+    drop-shadow(0 -2px 10px rgba(201,162,91,.28))
+    drop-shadow(0 18px 26px rgba(0,0,0,.55));
+}
+.collection__petal img{display:block;width:100%;height:auto}
+.collection__petal--a{left:38.5%;top:11%;width:clamp(58px,6vw,96px);rotate:-22deg;opacity:.92}
+.collection__petal--b{left:48.5%;top:14.5%;width:clamp(40px,4.2vw,66px);rotate:64deg;opacity:.66}
+.collection__petal--c{right:1.2%;top:66%;width:clamp(72px,7.4vw,118px);rotate:-28deg;opacity:.44}
+.collection__petal--d{left:34.9%;top:26.2%;width:clamp(40px,4.2vw,64px);rotate:126deg;opacity:.9;z-index:2}
+.collection__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.4vw,34px)}
+.card{display:flex;flex-direction:column;min-width:0}
+.card figure{margin:0;position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--night-2)}
+.card img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s var(--ease),filter .6s;
+}
+.card:hover img{transform:scale(1.045)}
+.card__no{
+  position:absolute;left:16px;top:14px;z-index:2;
+  font-size:12px;letter-spacing:.14em;color:rgba(236,228,212,.82);
+  font-variant-numeric:tabular-nums;
+}
+.card__cap{
+  display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:18px 0 13px;border-bottom:1px solid var(--line);
+  transition:border-color .4s var(--ease);
+}
+.card:hover .card__cap{border-color:var(--brass)}
+.card__cap h3{margin:0;font:400 clamp(19px,1.6vw,25px)/1.2 var(--serif);letter-spacing:.005em}
+.card__cap span{font-size:14px;letter-spacing:.02em;color:var(--brass);font-variant-numeric:tabular-nums;white-space:nowrap}
+.card__meta{margin:10px 0 0;font-size:12px;line-height:1.6;color:var(--muted)}
+
+/* ---------- ritual / studio ---------- */
+
+.ritual{background:var(--night)}
+.ritual__grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6vw,96px);align-items:center}
+.ritual__quote{
+  margin:0 0 34px;font:300 clamp(30px,3.4vw,50px)/1.18 var(--serif);
+  letter-spacing:-.02em;max-width:20ch;
+}
+.ritual__quote em{font-style:italic;color:var(--brass)}
+.ritual p{margin:0 0 16px;max-width:45ch;color:var(--muted);font-size:15px;line-height:1.8}
+.ritual p b{color:var(--ivory);font-weight:400}
+.ritual__sig{
+  margin-top:30px;display:flex;align-items:center;gap:14px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+}
+.ritual__sig::before{content:"";width:48px;height:1px;background:var(--brass)}
+.ritual figure{margin:0;position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--night)}
+.ritual figure img{width:100%;height:100%;object-fit:cover;filter:saturate(.86)}
+.ritual figure::after{content:"";position:absolute;inset:14px;border:1px solid rgba(201,162,91,.3);pointer-events:none}
+
+/* Декор студии: крупные размытые пятна по всему полю — левая и правая
+   кромки на двух высотах плюс нижний край; золотое свечение у верхнего
+   правого угла кадра. Резкие лепестки — в верхней полосе паддинга, над
+   кромкой фото, у правой кромки и в нижнем левом углу. Всё под контентом
+   (z-index:0), поэтому кромки пятен читаются, а фото и текст их держат. */
+.ritual .decor{
+  --decor-sheen-x:64%;--decor-sheen-y:2%;
+  --glow-a-x:-16%;--glow-a-y:-16%;--glow-a-w:46vw;--glow-a-o:.26;
+  --glow-b-x:-18%;--glow-b-y:-12%;--glow-b-w:42vw;--glow-b-o:.24;
+  --glow-c-x:-18%;--glow-c-y:14%;--glow-c-w:34vw;--glow-c-o:.22;
+  --glow-d-x:-22%;--glow-d-y:-10%;--glow-d-w:48vw;--glow-d-o:.22;
+  --glow-e-x:18%;--glow-e-y:-18%;--glow-e-w:30vw;--glow-e-o:.2;
+  --petal-a-x:45%;--petal-a-y:2.2%;--petal-a-w:clamp(52px,5.4vw,88px);--petal-a-r:-20deg;--petal-a-o:.9;
+  --petal-b-x:61%;--petal-b-y:10.4%;--petal-b-w:clamp(38px,4.2vw,64px);--petal-b-r:58deg;--petal-b-o:.62;
+  --petal-c-x:-1.4%;--petal-c-y:78%;--petal-c-w:clamp(60px,6.2vw,100px);--petal-c-r:-34deg;--petal-c-o:.48;
+  --petal-d-x:1.2%;--petal-d-y:88.5%;--petal-d-w:clamp(34px,3.6vw,56px);--petal-d-r:124deg;--petal-d-o:.8;
+}
+/* одна колонка: пятна держатся у кромок, лепесток остаётся один (b/c/d
+   прячет base.css) */
+@media (max-width:960px){
+  .ritual .decor{
+    --decor-sheen-x:74%;--decor-sheen-y:2%;
+    --glow-a-x:-24%;--glow-a-y:-4%;--glow-a-w:72vw;--glow-a-o:.24;
+    --glow-b-x:-30%;--glow-b-y:8%;--glow-b-w:56vw;--glow-b-o:.22;
+    --glow-c-x:-26%;--glow-c-y:4%;--glow-c-w:46vw;--glow-c-o:.2;
+    --glow-d-x:-34%;--glow-d-y:26%;--glow-d-w:60vw;--glow-d-o:.2;
+    --glow-e-x:10%;--glow-e-y:-14%;--glow-e-w:44vw;--glow-e-o:.2;
+    --petal-a-x:58%;--petal-a-y:1.6%;--petal-a-w:clamp(46px,8vw,64px);--petal-a-r:-26deg;--petal-a-o:.88;
+  }
+}
+
+/* ---------- delivery ---------- */
+
+.delivery__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,96px);align-items:start}
+.delivery__lead p{margin:0 0 16px;max-width:38ch;color:var(--muted);font-size:15px;line-height:1.8}
+.delivery__lead .note{
+  margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:12px;color:rgba(236,228,212,.56);line-height:1.75;max-width:36ch;
+}
+.price{margin:0;padding:0;list-style:none;border-top:1px solid var(--brass)}
+.price li{
+  display:grid;grid-template-columns:1fr 150px;gap:24px;padding:20px 0;
+  border-bottom:1px solid var(--line);align-items:baseline;
+}
+.price .z{font-size:16px}
+.price .z i{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:3px}
+.price .c{
+  text-align:right;font:300 19px/1.2 var(--serif);color:var(--brass);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+
+/* Декор доставки: пять мягких пятен держатся свободных зон — левого верхнего
+   поля, полосы над абзацем-лидом, промежутка между колонками, нижнего края и
+   левого нижнего угла. Резкие лепестки живут в верхней полосе, между колонками
+   и в нижнем правом углу, поэтому абзацы и цифры цен остаются на тёмном.
+   Золотое свечение сдвинуто к заголовку, как лампа над столом. */
+#delivery .decor{
+  --decor-sheen-x:16%;--decor-sheen-y:6%;
+  --glow-a-x:-14%;--glow-a-y:-10%;--glow-a-w:clamp(300px,42vw,620px);--glow-a-o:.28;
+  --glow-b-x:-8%;--glow-b-y:74%;--glow-b-w:clamp(260px,32vw,470px);--glow-b-o:.27;
+  --glow-c-x:-18%;--glow-c-y:-20%;--glow-c-w:clamp(320px,46vw,660px);--glow-c-o:.28;
+  --glow-d-x:48%;--glow-d-y:28%;--glow-d-w:clamp(210px,28vw,420px);--glow-d-o:.26;
+  --glow-e-x:48%;--glow-e-y:calc(50% - 844px);--glow-e-w:clamp(250px,36vw,520px);--glow-e-o:.3;
+  --petal-a-x:46%;--petal-a-y:10%;--petal-a-w:clamp(54px,5.6vw,92px);--petal-a-r:-18deg;--petal-a-o:.9;
+  --petal-b-x:66%;--petal-b-y:15.5%;--petal-b-w:clamp(38px,4vw,62px);--petal-b-r:58deg;--petal-b-o:.62;
+  --petal-c-x:-1.6%;--petal-c-y:84.5%;--petal-c-w:clamp(64px,6.6vw,106px);--petal-c-r:-30deg;--petal-c-o:.46;
+  --petal-d-x:34.4%;--petal-d-y:62%;--petal-d-w:clamp(38px,3.8vw,60px);--petal-d-r:122deg;--petal-d-o:.8;
+}
+
+/* Одна колонка: b/c/d прячет base.css, здесь дублируем — у `.decor img`
+   display:block, и специфичность класса его не перебивает. */
+@media (max-width:960px){
+  #delivery .decor__petal--b,
+  #delivery .decor__petal--c,
+  #delivery .decor__petal--d{display:none}
+}
+
+/* Планшет: контент сжат в левую треть, справа пустое поле — туда и уходят
+   три пятна, четвёртое светит из-под списка цен, пятое из левого нижнего угла. */
+@media (min-width:641px) and (max-width:960px){
+  #delivery .decor{
+    --decor-sheen-x:56%;--decor-sheen-y:2%;
+    --glow-a-x:38%;--glow-a-y:-4%;--glow-a-w:clamp(280px,44vw,560px);--glow-a-o:.28;
+    --glow-b-x:-4%;--glow-b-y:58%;--glow-b-w:clamp(260px,40vw,520px);--glow-b-o:.26;
+    --glow-c-x:-16%;--glow-c-y:-22%;--glow-c-w:clamp(250px,40vw,460px);--glow-c-o:.26;
+    --glow-d-x:-10%;--glow-d-y:34%;--glow-d-w:clamp(190px,26vw,300px);--glow-d-o:.22;
+    --glow-e-x:50%;--glow-e-y:-20%;--glow-e-w:clamp(220px,34vw,420px);--glow-e-o:.3;
+    --petal-a-x:56%;--petal-a-y:7%;--petal-a-w:clamp(50px,7vw,72px);--petal-a-r:-22deg;--petal-a-o:.88;
+  }
+}
+
+/* Ноутбук 961–1180: список цен растянут на всю ширину, и левое поле занято
+   текстом — пятна уходят в пустую правую половину над ценами, а два нижних
+   светят из-под последней строки списка. */
+@media (min-width:961px) and (max-width:1180px){
+  #delivery .decor{
+    --decor-sheen-x:58%;--decor-sheen-y:2%;
+    --glow-a-x:40%;--glow-a-y:24%;--glow-a-w:clamp(270px,32vw,400px);--glow-a-o:.28;
+    --glow-b-x:-14%;--glow-b-y:440px;--glow-b-w:clamp(240px,32vw,380px);--glow-b-o:.26;
+    --glow-c-x:-16%;--glow-c-y:-260px;--glow-c-w:clamp(240px,30vw,360px);--glow-c-o:.26;
+    --glow-d-x:-18%;--glow-d-y:0%;--glow-d-w:clamp(200px,26vw,300px);--glow-d-o:.24;
+    --glow-e-x:50%;--glow-e-y:-25%;--glow-e-w:clamp(240px,32vw,400px);--glow-e-o:.3;
+    --petal-a-x:40%;--petal-a-y:9.5%;--petal-a-w:clamp(50px,6vw,72px);--petal-a-r:-22deg;--petal-a-o:.88;
+    --petal-b-x:74%;--petal-b-y:22%;--petal-b-w:clamp(36px,3.8vw,58px);--petal-b-r:58deg;--petal-b-o:.62;
+    --petal-c-x:-1.6%;--petal-c-y:calc(100% - 70px);--petal-c-w:clamp(60px,6.4vw,100px);--petal-c-r:-30deg;--petal-c-o:.46;
+    --petal-d-x:52%;--petal-d-y:36%;--petal-d-w:clamp(36px,3.8vw,56px);--petal-d-r:122deg;--petal-d-o:.8;
+  }
+}
+
+/* Телефон: заголовок занимает левую половину верхней полосы, поэтому пары
+   пятен встают в его правый просвет и за кромки; два нижних светят из-под
+   списка цен, не дотягиваясь до цифр. */
+@media (max-width:640px){
+  #delivery .decor{
+    --decor-sheen-x:12%;--decor-sheen-y:2%;
+    --glow-a-x:-18%;--glow-a-y:-2%;--glow-a-w:clamp(170px,54vw,270px);--glow-a-o:.3;
+    --glow-b-x:-14%;--glow-b-y:84%;--glow-b-w:clamp(160px,54vw,260px);--glow-b-o:.28;
+    --glow-c-x:-20%;--glow-c-y:calc(92px - var(--glow-c-w));--glow-c-w:clamp(150px,54vw,260px);--glow-c-o:.3;
+    --glow-d-x:-30%;--glow-d-y:34%;--glow-d-w:clamp(140px,44vw,220px);--glow-d-o:.24;
+    --glow-e-x:52%;--glow-e-y:calc(78px - var(--glow-e-w));--glow-e-w:clamp(150px,46vw,230px);--glow-e-o:.28;
+    --petal-a-x:68%;--petal-a-y:8.5%;--petal-a-w:clamp(44px,10vw,58px);--petal-a-r:-24deg;--petal-a-o:.88;
+  }
+}
+
+/* ---------- order ---------- */
+
+.order{background:var(--night)}
+.order__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,92px);align-items:start}
+.order__lead{margin:0 0 30px;font-size:18px;line-height:1.7;color:rgba(236,228,212,.8);max-width:34ch}
+.steps{margin:0;padding:0;list-style:none;counter-reset:step}
+.steps li{
+  counter-increment:step;display:grid;grid-template-columns:42px minmax(0,1fr);gap:16px;
+  padding:17px 0;border-bottom:1px solid var(--line-soft);
+}
+.steps li:first-child{border-top:1px solid var(--line-soft)}
+.steps .n{font-size:11px;letter-spacing:.1em;color:var(--brass);padding-top:4px;font-variant-numeric:tabular-nums}
+.steps h3{margin:0 0 3px;font:400 19px/1.3 var(--serif)}
+.steps p{margin:0;font-size:13px;line-height:1.7;color:var(--muted);max-width:42ch}
+.order__fig{margin:26px 0 0;overflow:hidden;aspect-ratio:16/10;background:var(--night)}
+.order__fig img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.order__fig:hover img{transform:scale(1.03)}
+.order__contacts{margin-top:22px;font-size:12px;line-height:1.8;color:var(--muted)}
+.order__contacts a{color:var(--ivory);border-bottom:1px solid var(--line);transition:border-color .3s}
+.order__contacts a:hover{border-color:var(--brass);color:var(--brass)}
+
+.form{
+  background:var(--night-2);border:1px solid var(--line);
+  padding:clamp(24px,3vw,40px);
+}
+.form__row{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;min-width:0}
+.field label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.field label span{color:var(--brass);margin-left:4px}
+.field input,.field select,.field textarea{
+  width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);
+  color:var(--ivory);padding:10px 0 12px;font-size:16px;line-height:1.4;
+  border-radius:0;outline:none;transition:border-color .3s;
+  appearance:none;
+}
+.field textarea{min-height:78px;resize:vertical;padding-top:8px}
+.field input::placeholder,.field textarea::placeholder{color:rgba(236,228,212,.58)}
+.field select{
+  padding-right:26px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23c9a25b' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 2px center;
+}
+.field select option{background:var(--night-2);color:var(--ivory)}
+/* Нативный попап Chrome (Windows) заливает выбранную строку системным синим,
+   и это не переопределяется через CSS. base-select рисует список в странице:
+   получаем свой цвет выделения и горизонтальный отступ строк. Браузеры без
+   поддержки остаются на прежнем попапе. */
+@supports (appearance: base-select){
+  .field select,
+  .field select::picker(select){appearance:base-select}
+  .field select{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding-right:0;background-image:none;
+  }
+  .field select::picker-icon{
+    content:"";flex:none;width:12px;height:8px;color:transparent;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23c9a25b' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat center/contain;
+    transition:rotate .3s var(--ease);
+  }
+  .field select:open::picker-icon{rotate:180deg}
+  .field select::picker(select){
+    background:var(--night-2);color:var(--ivory);
+    border:1px solid var(--line);
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+    padding:8px 0;margin-block:6px;
+  }
+  .field select option{
+    padding:10px 16px;
+    background:transparent;color:var(--ivory);
+  }
+  .field select option:checked{background:rgba(201,162,91,.12);color:var(--brass)}
+  .field select option:hover,
+  .field select option:focus{background:rgba(201,162,91,.12);color:var(--brass)}
+  .field select option::checkmark{display:none}
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brass)}
+.field__err{font-size:11px;line-height:1.5;color:var(--error);display:none}
+.field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--error)}
+.field.invalid .field__err{display:block}
+.form__note{margin:14px 0 0;font-size:12px;line-height:1.65;color:rgba(236,228,212,.6)}
+.form__status{margin:16px 0 0;font-size:13px;line-height:1.65;color:var(--brass);min-height:0}
+.form__status:empty{display:none}
+.form__status.ok{color:#b9d6a8}
+.form__status.bad{color:var(--error)}
+
+/* ---------- visit ---------- */
+
+.visit{position:relative;overflow:hidden;background:var(--night);border-top:1px solid var(--line-soft)}
+.visit .wrap{position:relative;z-index:1}
+.visit__grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(32px,6vw,90px);align-items:start}
+.visit__addr{margin:34px 0 0;font:300 clamp(44px,6.4vw,100px)/1 var(--serif);letter-spacing:-.03em}
+.visit__addr i{font-style:italic;color:var(--brass)}
+.visit__meta{
+  display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:42px;
+  border-top:1px solid var(--line);padding-top:24px;
+}
+.visit__meta h3{margin:0 0 10px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
+.visit__meta p{margin:0;font-size:14px;line-height:1.85;color:var(--muted)}
+.visit__meta a{border-bottom:1px solid rgba(236,228,212,.28);transition:border-color .3s,color .3s}
+.visit__meta a:hover{border-color:var(--brass);color:var(--brass)}
+.rating{display:flex;gap:34px}
+.rating b{display:block;font:300 40px/1 var(--serif)}
+.rating span{display:block;font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:4px}
+.visit__side{display:flex;flex-direction:column;gap:26px;align-items:flex-start}
+.visit__side figure{margin:0;overflow:hidden;aspect-ratio:1;width:100%;background:var(--night)}
+.visit__side figure img{width:100%;height:100%;object-fit:cover}
+.visit__side .btn{margin-top:2px}
+
+/* ---------- home ---------- */
+
+/* Подвал встаёт в тот же стек, что и секции: пока он поднимается, последняя
+   секция остаётся приклеенной, а подвал наезжает на неё листом — насколько
+   хватает его собственной высоты. Места для наезда у подвала нет, поэтому
+   резервируем его высоту в main (::after) и поднимаем сам подвал на ту же
+   высоту: длина страницы не меняется. Высокая секция прилипает низом
+   (см. .sec.is-tall) — механика та же, отдельных исключений не нужно.
+   --foot-h пишет main.js. */
+.home main::after{content:"";display:block;height:var(--foot-h,0px)}
+.home .foot{margin-top:calc(var(--foot-h,0px) * -1)}
+
+/* ---------- responsive ---------- */
+
+@media (max-width:1180px){
+  .hero__body{grid-template-columns:minmax(0,1fr);gap:26px;align-items:end}
+  .hero__aside{justify-self:start;max-width:430px;padding-top:0}
+  .hero h1{max-width:12ch}
+  .hero__meta{flex-wrap:wrap;gap:20px 30px}
+  .collection__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card:last-child{grid-column:1 / -1;max-width:50%}
+  .ritual__grid,.delivery__grid,.order__grid,.visit__grid{grid-template-columns:1fr}
+  .ritual figure,.visit__side figure{max-width:460px}
+  .order__fig{max-width:560px}
+}
+@media (max-width:960px){
+  .hero{padding-top:86px}
+  .hero h1{font-size:clamp(44px,12.5vw,78px)}
+  .hero__foot{flex-direction:column;align-items:flex-start;gap:18px}
+  .hero__aside p{font-size:15px}
+  .hero__frame{inset:12px}
+  .vertical{display:none}
+  .collection__grid{grid-template-columns:1fr;gap:34px}
+  .collection__glow--near{width:78vw;left:-24%;top:0}
+  .collection__glow--far{width:64vw;bottom:auto;top:36%;right:-26%}
+  .collection__petal--a{top:96px;left:auto;right:8px}
+  .collection__petal--b,
+  .collection__petal--c,
+  .collection__petal--d{display:none}
+  .card:last-child{grid-column:auto;max-width:none}
+  .price li{grid-template-columns:1fr 120px}
+  .visit__meta{grid-template-columns:1fr}
+}
+/* эффект только для точного указателя: на касании остаётся исходный статичный фон */
+@media (hover:none),(pointer:coarse){
+  .trail{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .trail{display:none}
+  /* без движения: hero снова обычная секция, лист не поднимается поверх */
+  .hero-stage{height:auto}
+  .hero-stage .hero{position:relative;min-height:100svh}
+  .hero-stage + .collection{margin-top:0}
+  .hero-stage + .collection::before{display:none}
+  .hero__media{transform:none}
+  .hero .wrap{transform:none;opacity:1}
+}
+
+@media (max-width:640px){
+  .hero{padding-top:78px}
+  .hero__top .micro{font-size:11px}
+  .hero h1{max-width:10ch}
+  .hero__aside .btn{width:100%}
+  .hero__foot{margin-top:26px}
+  .hero__meta{gap:16px 24px;font-size:11px}
+  .ritual__quote{font-size:30px}
+  .ritual figure{max-width:none}
+  .sec-head h2{font-size:34px;max-width:14ch}
+  .form__row{grid-template-columns:1fr}
+  .form{padding:22px 20px}
+  .order__fig{aspect-ratio:4/3}
+  .visit__addr{font-size:44px}
+  .visit__side figure{max-width:none}
+  .rating{gap:26px}
+  .foot__mark{font-size:72px}
+}
+
+/* низкий экран: pinned-сцена должна уместиться в один экран, иначе нижняя
+   строка hero уходит под лист коллекции навсегда */
+@media (max-width:960px) and (max-height:700px){
+  .hero{padding-top:74px}
+  .hero__body{gap:20px}
+  .hero__aside .rule{margin-bottom:18px}
+  .hero__aside p{margin-bottom:18px}
+  .hero__foot{margin-top:18px;padding-top:16px}
+}
+
+
+/* ============ стек панелей: каждая секция прилипает и накрывается следующей ============
+   Механика ровно как в референсе: секции — соседи в потоке, каждая
+   position: sticky; top: 0; height: 100svh; z-index по порядку.
+   Браузер сам наезжает одной на другую, JS только считает --enter (для
+   скругления и «доезда» контента) и --q (параллакс).
+
+   Если контент секции физически выше экрана, прилипать верхом нельзя —
+   низ никогда не покажется. Такая секция прилипает низом: top отрицательный
+   на разницу высот, поэтому весь лист проезжает в кадре целиком, а когда
+   его низ встал на кромку экрана, следующая панель наезжает сверху — с тем
+   же скруглением и тенью, что и на десктопе. Высоту листа scroll.js пишет
+   в --sec-h. */
+
+.hero {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 640px;
+  z-index: 0;
+}
+
+.sec {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(28px, 5vh, 64px);
+  padding-top: calc(var(--nav-h, 72px) + clamp(8px, 1.5vh, 20px));
+  z-index: var(--z, 1);
+  /* панель обязана быть непрозрачной: в стеке прозрачная секция
+     просвечивает предыдущей */
+  background: var(--night);
+  border-radius: calc((1 - var(--enter, 1)) * 28px) calc((1 - var(--enter, 1)) * 28px) 0 0;
+  box-shadow:
+    0 -1px 0 rgba(201, 162, 91, .22),
+    0 -26px 70px rgba(0, 0, 0, .5);
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+/* Высокий лист держится низом. --sec-h — высота листа в px (ставит scroll.js);
+   viewport берём из dvh, чтобы прилипание совпадало с видимой кромкой на
+   телефоне, где адресная строка прячется при скролле. */
+.sec.is-tall {
+  position: sticky;
+  top: min(0px, calc(100svh - var(--sec-h, 100svh)));
+  top: min(0px, calc(100dvh - var(--sec-h, 100svh)));
+  height: auto;
+  min-height: 100svh;
+  /* выдох под последней строкой: наезжающая панель сначала съедает его,
+     а не текст, который ещё читают */
+  padding-bottom: clamp(48px, 9svh, 96px);
+}
+
+/* Hero выше экрана — тот же приём, что у .sec.is-tall: лист прилипает низом,
+   так что кнопка и мета-строка проезжают в кадре целиком. Иначе в альбомной
+   ориентации телефона (852×393) низ hero срезался кромкой и был недостижим. */
+.hero.is-tall {
+  top: min(0px, calc(100svh - var(--sec-h, 100svh)));
+  top: min(0px, calc(100dvh - var(--sec-h, 100svh)));
+  height: auto;
+  min-height: 100svh;
+  padding-bottom: clamp(36px, 7svh, 72px);
+}
+
+.hero + .collection {
+  border-radius: calc((1 - var(--enter, 0)) * 34px) calc((1 - var(--enter, 0)) * 34px) 0 0;
+}
+
+/* hero: след лежит НАД затемнением, но под текстом — поэтому он «снимает»
+   градиент, а не рисует поверх кадра */
+.hero > .trail {
+  z-index: 1;
+}
+
+/* контент героя гаснет ДО того, как его срежет кромка следующего листа:
+   иначе строка обрывается пополам и это читается как баг вёрстки */
+.hero .wrap,
+.hero .micro,
+.hero .vertical,
+.hero .scroll-hint {
+  opacity: calc(1 - var(--cover, 0) * 1.45);
+}
+
+/* ---------- параллакс ---------- */
+
+.sec .wrap {
+  width: 100%;
+  transform: translate3d(0, calc(var(--q, 0) * -1.7vh), 0);
+  will-change: transform;
+}
+
+.sec-head h2,
+.ritual__quote,
+.visit__addr,
+.order__lead,
+.sec-head p {
+  transform: translate3d(0, calc(var(--q, 0) * -0.9vh), 0);
+}
+
+.ritual figure img,
+.visit__side figure img,
+.cat-hero figure img {
+  transform: translate3d(0, calc(var(--q, 0) * 4.6vh), 0) scale(1.09);
+  will-change: transform;
+}
+
+/* на невысоких экранах секция заказа не влезает в панель вместе с
+   декоративным кадром — убираем его, чтобы секция осталась в стеке */
+@media (max-height: 1050px) {
+  .order__fig { display: none; }
+}
+
+@media (max-height: 760px) {
+  .sec .wrap,
+  .sec-head h2,
+  .ritual__quote,
+  .visit__addr,
+  .order__lead,
+  .sec-head p {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .sec,
+  .sec.is-tall {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 100svh;
+  }
+  .sec,
+  .hero + .collection {
+    border-radius: 0;
+  }
+  .sec .wrap,
+  .sec-head h2,
+  .ritual__quote,
+  .visit__addr,
+  .order__lead,
+  .sec-head p,
+  .ritual figure img,
+  .visit__side figure img {
+    transform: none;
+  }
+}

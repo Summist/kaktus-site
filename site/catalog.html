@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог — арт-студия «Кактус», Сургут</title>
+<meta name="description" content="Двенадцать букетов и композиций арт-студии «Кактус» в Сургуте: цены, состав, доставка от 450 ₽.">
+<meta name="theme-color" content="#0e1813">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Каталог — арт-студия «Кактус»">
+<meta property="og:description" content="Букеты и композиции из редких цветов. Сургут, доставка от 450 ₽.">
+<meta property="og:image" content="assets/img/hero-bordeaux.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/base.css?v=20261121-8">
+<link rel="stylesheet" href="assets/css/catalog.css?v=20261121-6">
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти к содержанию</a>
+
+<header class="hdr hdr--solid" id="hdr">
+  <div class="wrap">
+    <a class="mark" href="index.html" aria-label="Кактус — на главную">
+      <b>Кактус</b><span>арт-студия · Сургут</span>
+    </a>
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="index.html#collection">Коллекция</a>
+      <a href="catalog.html" aria-current="page">Каталог</a>
+      <a href="index.html#ritual">Студия</a>
+      <a href="index.html#delivery">Доставка</a>
+      <a href="index.html#visit">Визит</a>
+      <a class="cta" href="index.html#order">Заказать</a>
+    </nav>
+    <a class="hdr__tel" href="tel:+79227754852">+7 922 775-48-52</a>
+    <nav class="menu-panel" id="menuPanel" popover aria-label="Мобильная навигация">
+      <div class="menu-panel__list">
+        <a href="index.html#collection">Коллекция</a>
+        <a href="catalog.html">Каталог</a>
+        <a href="index.html#ritual">Студия</a>
+        <a href="index.html#delivery">Доставка</a>
+        <a href="index.html#visit">Визит</a>
+        <a href="index.html#order">Заказать букет</a>
+      </div>
+      <a class="menu-panel__foot" href="tel:+79227754852">
+        <span class="tag">Телефон</span>
+        <span class="menu-panel__tel">+7 922 775-48-52</span>
+      </a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" type="button" popovertarget="menuPanel" aria-controls="menuPanel" aria-expanded="false" aria-label="Открыть меню"><i></i></button>
+  </div>
+</header>
+
+<main class="catalog-main" id="main">
+
+  <section class="cat-list" aria-labelledby="cat-title" data-section>
+    <div class="decor" aria-hidden="true">
+      <img class="decor__glow decor__glow--a" src="assets/img/petal-scatter.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__glow decor__glow--b" src="assets/img/petal-ivory.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__glow decor__glow--c" src="assets/img/petal-scatter.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__glow decor__glow--d" src="assets/img/petal-rose.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__glow decor__glow--e" src="assets/img/petal-burgundy.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__petal decor__petal--a" src="assets/img/petal-ivory.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__petal decor__petal--b" src="assets/img/petal-rose.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__petal decor__petal--c" src="assets/img/petal-burgundy.png" alt="" width="900" height="900" loading="lazy">
+      <img class="decor__petal decor__petal--d" src="assets/img/petal-ivory.png" alt="" width="900" height="900" loading="lazy">
+    </div>
+    <div class="cat-hero">
+      <div class="wrap">
+        <div class="cat-hero__grid">
+          <h1 id="cat-title">Каталог</h1>
+          <div class="cat-hero__aside">
+            <p>Двенадцать букетов и композиций, которые можно заказать сегодня. <b>Всего в студии около 150 позиций</b>, нужный состав соберём под бюджет.</p>
+            <div class="cat-hero__meta">
+              <span><strong>12</strong> в подборке</span>
+              <span><strong>150</strong> всего</span>
+              <span><strong>450 ₽</strong> доставка</span>
+            </div>
+          </div>
+        </div>
+        <div class="cat-bar">
+          <div class="filters" role="group" aria-label="Категории каталога">
+            <button class="filter" data-filter="all" aria-pressed="true">Все</button>
+            <button class="filter" data-filter="bouquet" aria-pressed="false">Букеты</button>
+            <button class="filter" data-filter="box" aria-pressed="false">Коробки</button>
+            <button class="filter" data-filter="composition" aria-pressed="false">Композиции</button>
+          </div>
+          <span class="cat-count" id="catCount">12 букетов</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap cat-products" aria-label="Букеты и композиции">
+    <div class="cat-grid" id="catGrid">
+
+      <a class="cat-card" data-cat="box" href="index.html?bouquet=nochnoy-sad#order">
+        <figure>
+          <span class="cat-card__badge">Коробка</span>
+          <img src="assets/img/bouquet-box.jpg" alt="Круглая коробка с бордовыми розами, далиями и ягодами" width="1254" height="1254" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Ночной сад</h2><span class="cat-card__price">7 450 ₽</span></div>
+          <p class="cat-card__comp">Шляпная коробка: розы, далии, ягоды</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="box" href="index.html?bouquet=pudrovaya-korobka#order">
+        <figure>
+          <span class="cat-card__badge">Коробка</span>
+          <img src="assets/img/box-pastel.jpg" alt="Кремовая коробка с розовыми розами и жёлтыми ранункулюсами" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Пудровая коробка</h2><span class="cat-card__price">6 900 ₽</span></div>
+          <p class="cat-card__comp">Розы, ранункулюсы, лизьянтус</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=belyy-pion#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-white-green.jpg" alt="Белый букет из пионов и роз с зеленью и хвоей" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Белый пион</h2><span class="cat-card__price">6 200 ₽</span></div>
+          <p class="cat-card__comp">Пионы, розы, хеллеборус, хвоя</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=bordo#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-burgundy.jpg" alt="Букет бордовых роз и георгин в крафтовой бумаге" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Бордо</h2><span class="cat-card__price">5 350 ₽</span></div>
+          <p class="cat-card__comp">Садовые розы, георгины, эвкалипт</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=rumyanets#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-pastel.jpg" alt="Букет розовых и кремовых роз в пудровой вазе" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Румянец</h2><span class="cat-card__price">4 200 ₽</span></div>
+          <p class="cat-card__comp">Розы, ранункулюсы, астильба</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=yantarnyy#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-amber.jpg" alt="Оранжевый букет из роз и ранункулюсов в янтарной вазе" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Янтарный</h2><span class="cat-card__price">3 950 ₽</span></div>
+          <p class="cat-card__comp">Розы, ранункулюсы, бархатцы</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=klassika#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-rose-classic.jpg" alt="Классический букет из 25 красных роз в зелёной бумаге" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Классика</h2><span class="cat-card__price">6 850 ₽</span></div>
+          <p class="cat-card__comp">25 садовых роз, тёмно-зелёная бумага</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="bouquet" href="index.html?bouquet=goluboe-utro#order">
+        <figure>
+          <span class="cat-card__badge">Букет</span>
+          <img src="assets/img/bouquet-blue.jpg" alt="Бело-голубой букет из роз, дельфиниума и эвкалипта" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Голубое утро</h2><span class="cat-card__price">5 700 ₽</span></div>
+          <p class="cat-card__comp">Розы, дельфиниум, лизьянтус, эвкалипт</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="composition" href="index.html?bouquet=vecherniy-svet#order">
+        <figure>
+          <span class="cat-card__badge">Композиция</span>
+          <img src="assets/img/hero-nocturne.jpg" alt="Композиция из белых пионов и бордовых георгин в латунной вазе" width="1536" height="1024" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Вечерний свет</h2><span class="cat-card__price">8 900 ₽</span></div>
+          <p class="cat-card__comp">Пионы, розы, георгины, каллы в латуни</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="composition" href="index.html?bouquet=temnyy-sad#order">
+        <figure>
+          <span class="cat-card__badge">Композиция</span>
+          <img src="assets/img/hero-bordeaux.jpg" alt="Композиция из бордовых роз, орхидей и калл в бронзовой вазе" width="1536" height="1024" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Тёмный сад</h2><span class="cat-card__price">8 600 ₽</span></div>
+          <p class="cat-card__comp">Розы, орхидеи, каллы, амарант в бронзе</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="composition" href="index.html?bouquet=suhotsvety#order">
+        <figure>
+          <span class="cat-card__badge">Композиция</span>
+          <img src="assets/img/bouquet-dry.jpg" alt="Сухоцветы: пампус, лагурус, сухие розы и эвкалипт в керамической вазе" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Сухоцветы</h2><span class="cat-card__price">4 900 ₽</span></div>
+          <p class="cat-card__comp">Пампус, лагурус, сухие розы, эвкалипт</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <a class="cat-card" data-cat="composition" href="index.html?bouquet=osennyaya-korzina#order">
+        <figure>
+          <span class="cat-card__badge">Композиция</span>
+          <img src="assets/img/bouquet-basket.jpg" alt="Осенняя корзина с бордовыми далиями, оранжевыми розами и ягодами" width="1122" height="1402" loading="lazy">
+        </figure>
+        <div class="cat-card__body">
+          <div class="cat-card__row"><h2>Осенняя корзина</h2><span class="cat-card__price">9 900 ₽</span></div>
+          <p class="cat-card__comp">Далии, розы, гвоздики, ягоды в плетёной корзине</p>
+          <span class="cat-card__more">Заказать <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
+
+      <p class="cat-empty" id="catEmpty" hidden>В этой категории пока нет букетов. Посмотрите все или позвоните — соберём под запрос.</p>
+    </div>
+
+    <div class="cat-cta">
+      <div>
+        <h2>Не нашли букет?</h2>
+        <p>Соберём под бюджет и повод: от 1 850 ₽. Пришлите пожелания — предложим состав и покажем цену до сборки.</p>
+      </div>
+      <a class="btn btn--solid" href="index.html#order">Собрать букет
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot" data-section style="--z:7">
+  <div class="wrap">
+    <div class="foot__row">
+      <p>Арт-студия «Кактус». Вечерние букеты и композиции в Сургуте с 2013 года. Проспект Ленина, 18.</p>
+      <div>
+        <b>Связь</b>
+        <a href="tel:+79227754852">+7 922 775-48-52</a>
+        <a href="https://t.me/art_studiy_kaktus86" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://vk.com/flowers_kaktus_srg86" target="_blank" rel="noopener">ВКонтакте</a>
+      </div>
+      <div>
+        <b>Студия</b>
+        <span>Проспект Ленина, 18</span>
+        <span>Ежедневно 08:00–21:00</span>
+        <span>Доставка от 450 ₽</span>
+      </div>
+    </div>
+    <div class="foot__mark" aria-hidden="true"><span>Кактус</span></div>
+    <div class="legal">
+      <span>© 2013–2026 Арт-студия «Кактус», Сургут</span>
+      <span>Демонстрационный проект. Изображения сгенерированы для макета.</span>
+      <a href="privacy.html">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/scroll.js?v=20261121-8" defer></script>
+<script src="assets/js/main.js?v=20261121-4" defer></script>
+</body>
+</html>
